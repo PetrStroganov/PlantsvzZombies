@@ -3,7 +3,7 @@ from methods import load_image
 
 
 class Map:
-    image = pygame.transform.scale(load_image("models/interface/background.jpg"), (1000, 600))
+    image = pygame.transform.scale(load_image("images/background.jpg"), (1000, 600))
     def __init__(self):
         self.map_hitbox = pygame.rect.Rect(0, 0, 1000, 600)
         self.map_color = pygame.color.Color((0, 120, 255))
