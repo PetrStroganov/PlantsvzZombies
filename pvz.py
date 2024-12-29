@@ -1,6 +1,3 @@
-import pygame
-import time
-
 from models.interface.hud import HUD
 from models.interface.map import *
 from models.cursor import Cursor
@@ -13,18 +10,16 @@ def game(screen):
     map = Map()
     hud = HUD()
     field = Field()
-    falling_sun_test = FallingSun()
-    falling_time = time.time()
+
     isShowHitbox = True
-    clock = pygame.time.Clock()
     cursor = Cursor()
     pygame.mouse.set_visible(False)
     running = True
     suns_count = 250
     font = pygame.font.SysFont(None, 40)
-
+    falling_time = time.time()
+    falling_suns = []
     while running:
-        tick = clock.tick()
         # Обрабатываем события
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -34,17 +29,17 @@ def game(screen):
                     isShowHitbox = not isShowHitbox
             if event.type == pygame.MOUSEMOTION:
                 cursor.move(*event.pos)
-
         screen.fill((100, 100, 100))
-        map.draw(screen)
+        map.draw(screen, is_show_hitbox=isShowHitbox)
         hud.draw(screen, is_show_hitbox=isShowHitbox)
-        field.draw(screen)
-        if time.time() - falling_time > 10:
+        field.draw(screen, is_show_hitbox=isShowHitbox)
+        if time.time() - falling_time >= 10:
             falling_sun = FallingSun()
-            falling_sun.draw(screen)
+            falling_suns.append(falling_sun)
             falling_time = time.time()
+        for sun in falling_suns:
+            sun.draw(screen)
         cursor.draw(screen)
-        falling_sun_test.draw(screen)
         suns_text = font.render(str(suns_count), True, (0, 0, 0))
         screen.blit(suns_text, (45, 82))
         pygame.display.flip()

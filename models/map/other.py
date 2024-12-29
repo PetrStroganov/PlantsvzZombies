@@ -1,12 +1,47 @@
 import pygame
+import time
+import random
+from methods import load_image
 
 
 class Sun:
-    pass
+    image = pygame.transform.scale(load_image("images/sun.png"), (50, 50))
+    def __init__(self, x: int, y: int):
+        self.x = x
+        self.y = y
+
+        self.new_image = None
+        self.sun_hitbox = pygame.rect.Rect(self.x, self.y, 50, 50)
+        self.sun_color = pygame.color.Color((255, 255, 0))
+
+        self.sprite = pygame.sprite.Sprite()
+        self.sprite.image = Sun.image
+        self.sprite.rect = self.sun_hitbox
+        self._ = pygame.sprite.GroupSingle()
+        self._.add(self.sprite)
+
+        self.death_time = time.time()
+
+    def draw(self, screen: pygame.Surface, is_show_hitbox=True):
+        if is_show_hitbox and time.time() - self.death_time < 6:
+            pygame.draw.rect(screen, self.sun_color, self.sun_hitbox, width=2)
+        if time.time() - self.death_time < 6:
+            self._.draw(screen)
+
 
 
 class FallingSun(Sun):
-    pass
+    def __init__(self):
+        super().__init__(random.randint(250, 960), 0)
+        self.falling_y = random.randint(30, 525)
+
+    def draw(self, screen: pygame.Surface, is_show_hitbox=True):
+        super().draw(screen, is_show_hitbox=True)
+        self.y += 1
+        self.sun_hitbox.y = self.y / 5
+        if self.y >= self.falling_y:
+            self.y = self.falling_y
+
 
 
 class Pea:
