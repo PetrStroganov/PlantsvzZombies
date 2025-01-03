@@ -12,7 +12,6 @@ class Sun:
         self.x = x
         self.y = y
 
-        self.new_image = None
         self.sun_hitbox = pygame.rect.Rect(self.x, self.y, 50, 50)
         self.sun_color = pygame.color.Color((255, 255, 0))
 
@@ -21,7 +20,7 @@ class Sun:
         self.sprite.rect = self.sun_hitbox
         self._ = pygame.sprite.GroupSingle()
         self._.add(self.sprite)
-
+        self.picked = False
         self.death_time = time.time()
 
     def draw(self, screen: pygame.Surface, is_show_hitbox=True):
@@ -29,6 +28,9 @@ class Sun:
             pygame.draw.rect(screen, self.sun_color, self.sun_hitbox, width=2)
         if time.time() - self.death_time < 6:
             self._.draw(screen)
+
+    def is_clicked(self, mouse_pos):
+        return self.sprite.rect.collidepoint(mouse_pos)
 
 
 class FallingSun(Sun):

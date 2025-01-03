@@ -25,9 +25,7 @@ class Field:
     def __init__(self):
         self.field_hitbox = pygame.rect.Rect(250, 75, 710, 500)
         self.field_color = pygame.color.Color((0, 0, 255))
-        self.field = [[None] * 8 for _ in range(6)]
 
     def draw(self, screen: pygame.Surface, is_show_hitbox=True):
         if is_show_hitbox:
             pygame.draw.rect(screen, self.field_color, self.field_hitbox, width=2)
-
