@@ -9,7 +9,6 @@ suns = []
 
 
 def game(screen):
-    global mouse_x, mouse_y
     map = Map()
     hud = HUD()
     field = Field()
@@ -22,6 +21,7 @@ def game(screen):
     font = pygame.font.SysFont(None, 40)
     falling_time = time.time()
     seed = None
+    clicked_pos = None
     while running:
         # Обрабатываем события
         for event in pygame.event.get():
@@ -38,7 +38,7 @@ def game(screen):
         map.draw(screen, is_show_hitbox=isShowHitbox)
         hud.draw(screen, is_show_hitbox=isShowHitbox)
         field.draw(screen, is_show_hitbox=isShowHitbox)
-        if time.time() - falling_time >= 1:
+        if time.time() - falling_time >= 10:
             falling_sun = FallingSun()
             suns.append(falling_sun)
             falling_time = time.time()
