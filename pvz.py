@@ -1,4 +1,3 @@
-import time
 from models.entities.plants.plants import *
 from models.interface.hud import HUD
 from models.interface.map import *
@@ -27,7 +26,6 @@ def game(screen):
     pygame.mixer.music.play(-1)
     seed = None
     drag_plant_image = None
-    clicked_pos = None
     dragging = False
     drag_x, drag_y = -100, -100
     while running:
@@ -75,7 +73,9 @@ def game(screen):
                     if 250 <= drag_x + 40 <= 960 and 75 <= drag_y + 50 <= 575:
                         x_plant = lawn_x(drag_x + 40)[0]
                         y_plant = lawn_y(drag_y + 50)[0]
-                        if seed == "SunFlower" and (lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns:
+                        if seed == "SunFlower" and (
+                        lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 50:
+                            suns_count -= 50
                             busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
                             plants.append(SunFlower(x_plant, y_plant))
             if event.type == pygame.MOUSEMOTION:
@@ -91,15 +91,14 @@ def game(screen):
             falling_sun = FallingSun()
             suns.append(falling_sun)
             falling_time = time.time()
-        for sun in suns:
-            sun.draw(screen, is_show_hitbox=isShowHitbox)
         for plant in plants:
             plant.draw(screen, is_show_hitbox=isShowHitbox)
-        for plant in plants:
             if isinstance(plant, SunFlower):
                 new_sun = plant.generate_sun()
                 if new_sun:
                     suns.append(new_sun)
+        for sun in suns:
+            sun.draw(screen, is_show_hitbox=isShowHitbox)
         cursor.draw(screen)
         if dragging and drag_plant_image is not None:
             screen.blit(drag_plant_image, (drag_x, drag_y))
