@@ -1,7 +1,7 @@
 import pygame
 import time
 import random
-from methods import load_image
+from methods import load_image, lawn_y, lawn_x
 
 
 class Sun:

@@ -1,5 +1,4 @@
 import pygame
-
 from pvz import game
 
 screen_dict = {1: game}
