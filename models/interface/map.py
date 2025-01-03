@@ -4,6 +4,7 @@ from methods import load_image
 
 class Map:
     image = pygame.transform.scale(load_image("images/background.jpg"), (1000, 600))
+
     def __init__(self):
         self.map_hitbox = pygame.rect.Rect(0, 0, 1000, 600)
         self.map_color = pygame.color.Color((0, 120, 255))
@@ -22,6 +23,7 @@ class Map:
 
 class Field:
     CELL_SIZE = 100
+
     def __init__(self):
         self.field_hitbox = pygame.rect.Rect(250, 75, 710, 500)
         self.field_color = pygame.color.Color((0, 0, 255))

@@ -4,7 +4,6 @@ from pvz import game
 
 screen_dict = {1: game}
 
-
 if __name__ == '__main__':
     pygame.init()
     size = w, h = 1000, 600

@@ -1,5 +1,7 @@
 import pygame
+import time
 from pvz import *
+from models.map.other import Sun
 from methods import load_image, lawn_x, lawn_y
 
 
@@ -18,15 +20,10 @@ class Plant:
         else:
             busy_lawns.remove([self.line, self.column])
 
-    def planting(self, line, column, center_x, center_y):
-        self.line = line
-        self.column = column
-        self.center_x = center_x
-        self.center_y = center_y
-
 
 class SunFlower(Plant):
     image = pygame.transform.scale(load_image("images/sun1.png"), (90, 90))
+
     def __init__(self, x, y):
         super().__init__(health=75, cost=50, x=x, y=y)
         self.sprite = pygame.sprite.Sprite()
@@ -39,12 +36,10 @@ class SunFlower(Plant):
         self.spawn_time = time.time()
 
     def generate_sun(self):
-        super().draw(is_show_hitbox=True)
-        if time.time() - self.spawn_time > 10:
-            sun = Sun(self.center_x + 20, self.center_y - 10)
-            suns.append(sun)
+        if time.time() - self.spawn_time > 1:
+            generated_sun = Sun(self.x + 20, self.y - 10)
+            suns.append(generated_sun)
             self.spawn_time = time.time()
-
 
 
 class PeeShooter(Plant):

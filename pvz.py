@@ -30,7 +30,6 @@ def game(screen):
     clicked_pos = None
     dragging = False
     drag_x, drag_y = -100, -100
-    x, y = 0, 0
     while running:
         # Обрабатываем события
         for event in pygame.event.get():
@@ -52,27 +51,33 @@ def game(screen):
                 if not dragging:
                     if 30 <= clicked_pos[0] <= 110 and 120 <= clicked_pos[1] <= 230:
                         dragging = True
-                        seed = SunFlower
+                        seed = "SunFlower"
                         drag_plant_image = pygame.transform.scale(load_image("images/sun2.png"), (90, 90))
                         drag_plant_image.set_alpha(128)
                     if 30 <= clicked_pos[0] <= 110 and 240 <= clicked_pos[1] <= 350:
                         dragging = True
-                        seed = PeeShooter
+                        seed = "PeeShooter"
                         drag_plant_image = pygame.transform.scale(load_image("images/pea1.png"), (170, 90))
                         drag_plant_image.set_alpha(128)
                     if 30 <= clicked_pos[0] <= 110 and 360 <= clicked_pos[1] <= 470:
                         dragging = True
-                        seed = PeeShooter
+                        seed = "Nut"
                         drag_plant_image = pygame.transform.scale(load_image("images/nut1.png"), (70, 80))
                         drag_plant_image.set_alpha(128)
                     if 30 <= clicked_pos[0] <= 110 and 480 <= clicked_pos[1] <= 590:
                         dragging = True
-                        seed = PeeShooter
+                        seed = "TorchWood"
                         drag_plant_image = pygame.transform.scale(load_image("images/tree3.png"), (80, 90))
                         drag_plant_image.set_alpha(128)
             if event.type == pygame.MOUSEBUTTONUP:
                 if dragging:
                     dragging = False
+                    if 250 <= drag_x + 40 <= 960 and 75 <= drag_y + 50 <= 575:
+                        x_plant = lawn_x(drag_x + 40)[0]
+                        y_plant = lawn_y(drag_y + 50)[0]
+                        if seed == "SunFlower" and (lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns:
+                            busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
+                            plants.append(SunFlower(x_plant, y_plant))
             if event.type == pygame.MOUSEMOTION:
                 cursor.move(*event.pos)
                 if dragging:
@@ -90,6 +95,11 @@ def game(screen):
             sun.draw(screen, is_show_hitbox=isShowHitbox)
         for plant in plants:
             plant.draw(screen, is_show_hitbox=isShowHitbox)
+        for plant in plants:
+            if isinstance(plant, SunFlower):
+                new_sun = plant.generate_sun()
+                if new_sun:
+                    suns.append(new_sun)
         cursor.draw(screen)
         if dragging and drag_plant_image is not None:
             screen.blit(drag_plant_image, (drag_x, drag_y))
