@@ -1,5 +1,6 @@
 import pygame
 from pvz import busy_lawns
+from methods import load_image, lawn_x, lawn_y
 
 
 class Plant:
