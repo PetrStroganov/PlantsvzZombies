@@ -1,3 +1,5 @@
+import time
+from models.entities.plants.plants import *
 from models.interface.hud import HUD
 from models.interface.map import *
 from models.cursor import Cursor
@@ -6,6 +8,7 @@ from models.map.other import *
 EXIT, MAIN_SCREEN = 0, 1
 busy_lawns = []
 suns = []
+plants = []
 
 
 def game(screen):
@@ -20,8 +23,13 @@ def game(screen):
     suns_count = 250
     font = pygame.font.SysFont(None, 40)
     falling_time = time.time()
+
     seed = None
+    drag_plant_image = None
     clicked_pos = None
+    dragging = False
+    drag_x, drag_y = -100, -100
+    x, y = 0, 0
     while running:
         # Обрабатываем события
         for event in pygame.event.get():
@@ -32,8 +40,40 @@ def game(screen):
                     isShowHitbox = not isShowHitbox
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked_pos = event.pos
+                drag_x, drag_y = -100, -100
+                for sun in suns:
+                    if sun.is_clicked(clicked_pos):
+                        if not sun.picked:
+                            sun.picked = True
+                            suns_count += 25
+                            suns.remove(sun)
+                            break
+                if not dragging:
+                    if 30 <= clicked_pos[0] <= 110 and 120 <= clicked_pos[1] <= 230:
+                        dragging = True
+                        seed = SunFlower
+                        drag_plant_image = pygame.transform.scale(load_image("images/sun2.png"), (90, 90))
+                    if 30 <= clicked_pos[0] <= 110 and 240 <= clicked_pos[1] <= 350:
+                        dragging = True
+                        seed = PeeShooter
+                        drag_plant_image = pygame.transform.scale(load_image("images/pea1.png"), (170, 90))
+                    if 30 <= clicked_pos[0] <= 110 and 360 <= clicked_pos[1] <= 470:
+                        dragging = True
+                        seed = PeeShooter
+                        drag_plant_image = pygame.transform.scale(load_image("images/nut1.png"), (70, 80))
+                    if 30 <= clicked_pos[0] <= 110 and 480 <= clicked_pos[1] <= 590:
+                        dragging = True
+                        seed = PeeShooter
+                        drag_plant_image = pygame.transform.scale(load_image("images/tree3.png"), (80, 90))
+                    drag_plant_image.set_alpha(128)
+            if event.type == pygame.MOUSEBUTTONUP:
+                if dragging:
+                    dragging = False
             if event.type == pygame.MOUSEMOTION:
                 cursor.move(*event.pos)
+                if dragging:
+                    drag_x = event.pos[0] - 40
+                    drag_y = event.pos[1] - 50
         screen.fill((100, 100, 100))
         map.draw(screen, is_show_hitbox=isShowHitbox)
         hud.draw(screen, is_show_hitbox=isShowHitbox)
@@ -43,14 +83,12 @@ def game(screen):
             suns.append(falling_sun)
             falling_time = time.time()
         for sun in suns:
-            sun.draw(screen)
-            if sun.is_clicked(clicked_pos):
-                if not sun.picked:
-                    sun.picked = True
-                    suns_count += 25
-                    suns.remove(sun)
-                    break
+            sun.draw(screen, is_show_hitbox=isShowHitbox)
+        for plant in plants:
+            plant.draw(screen, is_show_hitbox=isShowHitbox)
         cursor.draw(screen)
+        if dragging and drag_plant_image is not None:
+            screen.blit(drag_plant_image, (drag_x, drag_y))
         suns_text = font.render(str(suns_count), True, (0, 0, 0))
         screen.blit(suns_text, (45, 82))
         pygame.display.flip()
