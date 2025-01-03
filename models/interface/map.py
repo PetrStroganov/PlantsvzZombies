@@ -23,7 +23,7 @@ class Map:
 class Field:
     CELL_SIZE = 100
     def __init__(self):
-        self.field_hitbox = pygame.rect.Rect(250, 70, 710, 500)
+        self.field_hitbox = pygame.rect.Rect(250, 75, 710, 500)
         self.field_color = pygame.color.Color((0, 0, 255))
         self.field = [[None] * 8 for _ in range(6)]
 

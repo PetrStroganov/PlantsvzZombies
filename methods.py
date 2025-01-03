@@ -46,19 +46,19 @@ def lawn_x(x):
 def lawn_y(y):
     center_y = 0
     line = 0
-    if 30 < y < 130:
-        center_y = 80
+    if 75 < y < 175:
+        center_y = 125
         line = 1
-    elif 130 <= y < 220:
-        center_y = 170
+    elif 175 <= y < 275:
+        center_y = 225
         line = 2
-    elif 220 <= y < 320:
-        center_y = 270
+    elif 275 <= y < 375:
+        center_y = 325
         line = 3
-    elif 320 <= y < 420:
-        center_y = 370
+    elif 375 <= y < 475:
+        center_y = 425
         line = 4
-    elif 420 <= y < 525:
-        center_y = 475
+    elif 475 <= y < 575:
+        center_y = 525
         line = 5
     return center_y, line
