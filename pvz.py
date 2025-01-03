@@ -23,7 +23,8 @@ def game(screen):
     suns_count = 250
     font = pygame.font.SysFont(None, 40)
     falling_time = time.time()
-
+    pygame.mixer.music.load("models/sounds/grasswalk.mp3")
+    pygame.mixer.music.play(-1)
     seed = None
     drag_plant_image = None
     clicked_pos = None
@@ -53,19 +54,22 @@ def game(screen):
                         dragging = True
                         seed = SunFlower
                         drag_plant_image = pygame.transform.scale(load_image("images/sun2.png"), (90, 90))
+                        drag_plant_image.set_alpha(128)
                     if 30 <= clicked_pos[0] <= 110 and 240 <= clicked_pos[1] <= 350:
                         dragging = True
                         seed = PeeShooter
                         drag_plant_image = pygame.transform.scale(load_image("images/pea1.png"), (170, 90))
+                        drag_plant_image.set_alpha(128)
                     if 30 <= clicked_pos[0] <= 110 and 360 <= clicked_pos[1] <= 470:
                         dragging = True
                         seed = PeeShooter
                         drag_plant_image = pygame.transform.scale(load_image("images/nut1.png"), (70, 80))
+                        drag_plant_image.set_alpha(128)
                     if 30 <= clicked_pos[0] <= 110 and 480 <= clicked_pos[1] <= 590:
                         dragging = True
                         seed = PeeShooter
                         drag_plant_image = pygame.transform.scale(load_image("images/tree3.png"), (80, 90))
-                    drag_plant_image.set_alpha(128)
+                        drag_plant_image.set_alpha(128)
             if event.type == pygame.MOUSEBUTTONUP:
                 if dragging:
                     dragging = False
