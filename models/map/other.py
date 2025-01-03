@@ -35,13 +35,13 @@ class Sun:
 
 class FallingSun(Sun):
     def __init__(self):
-        super().__init__(random.randint(250, 960), 0)
+        super().__init__(random.randint(250, 900), 0)
         self.falling_y = random.randint(50, 500)
 
     def draw(self, screen: pygame.Surface, is_show_hitbox=True):
-        super().draw(screen, is_show_hitbox=True)
+        super().draw(screen, is_show_hitbox)
         self.y += 1 / 3
-        self.sun_hitbox.y = self.y
+        self.sprite.rect.y = self.y
         if self.y >= self.falling_y:
             self.y = self.falling_y
 
