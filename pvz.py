@@ -11,10 +11,9 @@ plants = []
 
 
 def game(screen):
-    map = Map()
+    plants_vs_zombies_map = Map()
     hud = HUD()
     field = Field()
-
     isShowHitbox = True
     cursor = Cursor()
     pygame.mouse.set_visible(False)
@@ -23,6 +22,7 @@ def game(screen):
     font = pygame.font.SysFont(None, 40)
     falling_time = time.time()
     pygame.mixer.music.load("models/sounds/grasswalk.mp3")
+    plant_sound = pygame.mixer.Sound("models/sounds/seed.mp3")
     pygame.mixer.music.play(-1)
     seed = None
     drag_plant_image = None
@@ -52,21 +52,25 @@ def game(screen):
                         seed = "SunFlower"
                         drag_plant_image = pygame.transform.scale(load_image("images/sun2.png"), (90, 90))
                         drag_plant_image.set_alpha(128)
+                        plant_sound.play()
                     if 30 <= clicked_pos[0] <= 110 and 240 <= clicked_pos[1] <= 350:
                         dragging = True
                         seed = "PeeShooter"
                         drag_plant_image = pygame.transform.scale(load_image("images/pea1.png"), (170, 90))
                         drag_plant_image.set_alpha(128)
+                        plant_sound.play()
                     if 30 <= clicked_pos[0] <= 110 and 360 <= clicked_pos[1] <= 470:
                         dragging = True
                         seed = "Nut"
                         drag_plant_image = pygame.transform.scale(load_image("images/nut1.png"), (70, 80))
                         drag_plant_image.set_alpha(128)
+                        plant_sound.play()
                     if 30 <= clicked_pos[0] <= 110 and 480 <= clicked_pos[1] <= 590:
                         dragging = True
                         seed = "TorchWood"
                         drag_plant_image = pygame.transform.scale(load_image("images/tree3.png"), (80, 90))
                         drag_plant_image.set_alpha(128)
+                        plant_sound.play()
             if event.type == pygame.MOUSEBUTTONUP:
                 if dragging:
                     dragging = False
@@ -78,13 +82,14 @@ def game(screen):
                             suns_count -= 50
                             busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
                             plants.append(SunFlower(x_plant, y_plant))
+                            plant_sound.play()
             if event.type == pygame.MOUSEMOTION:
                 cursor.move(*event.pos)
                 if dragging:
                     drag_x = event.pos[0] - 40
                     drag_y = event.pos[1] - 50
         screen.fill((100, 100, 100))
-        map.draw(screen, is_show_hitbox=isShowHitbox)
+        plants_vs_zombies_map.draw(screen, is_show_hitbox=isShowHitbox)
         hud.draw(screen, is_show_hitbox=isShowHitbox)
         field.draw(screen, is_show_hitbox=isShowHitbox)
         if time.time() - falling_time >= 10:

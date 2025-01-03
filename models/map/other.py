@@ -1,7 +1,6 @@
 import pygame
 import time
 import random
-
 from methods import load_image
 
 
@@ -22,6 +21,8 @@ class Sun:
         self._.add(self.sprite)
         self.picked = False
         self.death_time = time.time()
+        spawn_sound = pygame.mixer.Sound("models/sounds/sunspawn.mp3")
+        spawn_sound.play()
 
     def draw(self, screen: pygame.Surface, is_show_hitbox=True):
         if is_show_hitbox and time.time() - self.death_time < 6:
