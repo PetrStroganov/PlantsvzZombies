@@ -1,4 +1,5 @@
 import pygame
+from pvz import busy_lawns
 
 
 class Plant:
@@ -13,6 +14,9 @@ class Plant:
     def draw(self, screen: pygame.Surface):
         if self.health > 0:
             self._.draw(screen)
+        else:
+            busy_lawns.remove([self.line, self.column])
+
 
 
 class SunFlower(Plant):

@@ -1,11 +1,13 @@
 import pygame
 import time
 import random
+
 from methods import load_image
 
 
 class Sun:
     image = pygame.transform.scale(load_image("images/sun.png"), (50, 50))
+
     def __init__(self, x: int, y: int):
         self.x = x
         self.y = y
@@ -29,8 +31,6 @@ class Sun:
             self._.draw(screen)
 
 
-
-
 class FallingSun(Sun):
     def __init__(self):
         super().__init__(random.randint(250, 960), 0)
@@ -42,7 +42,6 @@ class FallingSun(Sun):
         self.sun_hitbox.y = self.y
         if self.y >= self.falling_y:
             self.y = self.falling_y
-
 
 
 class Pea:

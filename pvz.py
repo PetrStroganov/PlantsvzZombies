@@ -4,6 +4,7 @@ from models.cursor import Cursor
 from models.map.other import *
 
 EXIT, MAIN_SCREEN = 0, 1
+busy_lawns = []
 
 
 def game(screen):
