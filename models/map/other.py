@@ -3,6 +3,12 @@ import time
 import random
 from methods import load_image, lawn_y, lawn_x
 
+busy_lawns = []
+suns = []
+plants = []
+zombies = []
+zombie_killed = 0
+game_active = True
 
 class Sun:
     image = pygame.transform.scale(load_image("images/sun.png"), (50, 50))

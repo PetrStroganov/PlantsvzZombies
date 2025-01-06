@@ -46,8 +46,7 @@ class SunFlower(Plant):
     def draw(self, screen: pygame.Surface, is_show_hitbox=True):
         super().draw(screen, is_show_hitbox)
         if is_show_hitbox:
-            pygame.draw.rect(screen, self.plant_color, self.plant_hitbox,
-                             width=1)
+            pygame.draw.rect(screen, self.plant_color, self.plant_hitbox, width=1)
         if time.time() - self.animation_time1 > 0.5:
             self.sprite.image = SunFlower.image2
             self.animation_time1 = time.time()
