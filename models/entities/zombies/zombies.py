@@ -21,7 +21,7 @@ class Zombie(pygame.sprite.Sprite):
         self._.add(self.sprite)
 
     def draw(self, screen: pygame.Surface, is_show_hitbox=True):
-        from pvz import zombie_killed
+        from pvz import zombie_killed, plants
         if not self.eating:
             self.x -= self.change_x
             self.sprite.rect.x = self.x
@@ -31,11 +31,13 @@ class Zombie(pygame.sprite.Sprite):
             self._.draw(screen)
         else:
             zombie_killed += 1
-        # for plant in plants:
-        #     if self.line == plant.line and pygame.sprite.collide_rect(self, plant):
-        #         plant.health -= 0.2
-        #         self.eating = True
-        #         break
+        for plant in plants:
+            if self.line == plant.line and pygame.sprite.spritecollide(self.sprite, plant._, False):
+                plant.health -= 0.02
+                self.eating = True
+                if plant.health <= 0:
+                    self.eating = False
+                break
 
     def game_over(self):
         if self.x <= 200:
