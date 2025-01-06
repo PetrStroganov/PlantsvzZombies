@@ -7,9 +7,15 @@ from models.map.other import *
 from methods import load_image
 
 EXIT, MAIN_SCREEN, GAME_OVER = 0, 1, 2
+busy_lawns = []
+suns = []
+plants = []
+zombies = []
+zombie_killed = 0
+game_active = True
 
 def game(screen):
-    from models.map.other import busy_lawns, suns, plants, zombies, zombie_killed, game_active
+    global busy_lawns, suns, plants, zombies, zombie_killed, game_active
     plants_vs_zombies_map = Map()
     hud = HUD()
     field = Field()
@@ -121,8 +127,8 @@ def game(screen):
             zombie_spawn_time = time.time()
         for zombie in zombies:
             zombie.draw(screen, is_show_hitbox=isShowHitbox)
-        if not game_active:
-            return GAME_OVER
+            if zombie.game_over():
+                return GAME_OVER
         zombies[:] = [zombie for zombie in zombies if zombie.health > 0]
         plants[:] = [plant for plant in plants if plant.health > 0]
         suns_text = font.render(str(suns_count), True, (0, 0, 0))
@@ -131,7 +137,7 @@ def game(screen):
 
 
 def game_over(screen):
-    from models.map.other import busy_lawns, suns, plants, zombies, zombie_killed, game_active
+    global busy_lawns, suns, plants, zombies, zombie_killed, game_active
     cursor = Cursor()
     pygame.mouse.set_visible(False)
     font = pygame.font.Font(None, 72)
