@@ -29,6 +29,8 @@ class Sun:
             pygame.draw.rect(screen, self.sun_color, self.sun_hitbox, width=2)
         if time.time() - self.death_time < 6:
             self._.draw(screen)
+        else:
+            self.sprite.kill()
 
     def is_clicked(self, mouse_pos):
         return self.sprite.rect.collidepoint(mouse_pos)

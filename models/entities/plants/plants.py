@@ -13,17 +13,12 @@ class Plant:
         self.line = 0
         self.column = 0
 
-    def draw(self, screen: pygame.Surface, is_show_hitbox=True):
-        from pvz import busy_lawns
+    def draw(self, screen: pygame.Surface, busy_lawns, is_show_hitbox=True):
         if self.health > 0:
             self._.draw(screen)
-            self.update_rect()
         else:
             busy_lawns.remove([self.line, self.column])
-
-    def update_rect(self):
-        if self.sprite:
-            self.sprite.rect = pygame.Rect(self.x, self.y, 80, 90)
+            self.sprite.kill()
 
 
 class SunFlower(Plant):
@@ -43,8 +38,8 @@ class SunFlower(Plant):
         self.animation_time1 = time.time()
         self.animation_time2 = time.time() + 0.25
 
-    def draw(self, screen: pygame.Surface, is_show_hitbox=True):
-        super().draw(screen, is_show_hitbox)
+    def draw(self, screen: pygame.Surface, busy_lawns, is_show_hitbox=True):
+        super().draw(screen, busy_lawns, is_show_hitbox)
         if is_show_hitbox:
             pygame.draw.rect(screen, self.plant_color, self.plant_hitbox, width=1)
         if time.time() - self.animation_time1 > 0.5:
@@ -54,8 +49,7 @@ class SunFlower(Plant):
             self.sprite.image = SunFlower.image1
             self.animation_time2 = time.time()
 
-    def generate_sun(self):
-        from pvz import suns
+    def generate_sun(self, suns):
         if time.time() - self.spawn_time > 10:
             generated_sun = Sun(self.x + 20, self.y - 10)
             suns.append(generated_sun)

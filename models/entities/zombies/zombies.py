@@ -20,8 +20,7 @@ class Zombie(pygame.sprite.Sprite):
         self._ = pygame.sprite.GroupSingle()
         self._.add(self.sprite)
 
-    def draw(self, screen: pygame.Surface, is_show_hitbox=True):
-        from pvz import zombie_killed, plants
+    def draw(self, screen: pygame.Surface, zombie_killed, plants, is_show_hitbox=True):
         if not self.eating:
             self.x -= self.change_x
             self.sprite.rect.x = self.x
@@ -31,6 +30,7 @@ class Zombie(pygame.sprite.Sprite):
             self._.draw(screen)
         else:
             zombie_killed += 1
+            self.sprite.kill()
         for plant in plants:
             if self.line == plant.line and pygame.sprite.spritecollide(self.sprite, plant._, False):
                 plant.health -= 0.02
@@ -53,8 +53,8 @@ class BasicZombie(Zombie):
         self.animation_time1 = time.time()
         self.animation_time2 = time.time() + 0.25
 
-    def draw(self, screen: pygame.Surface, is_show_hitbox=True):
-        super().draw(screen, is_show_hitbox)
+    def draw(self, screen: pygame.Surface, zombie_killed, plants, is_show_hitbox=True):
+        super().draw(screen, zombie_killed, plants, is_show_hitbox)
         if time.time() - self.animation_time1 > 0.5:
             self.sprite.image = BasicZombie.image2
             self.animation_time1 = time.time()
@@ -73,8 +73,8 @@ class ConeZombie(Zombie):
         self.animation_time1 = time.time()
         self.animation_time2 = time.time() + 0.25
 
-    def draw(self, screen: pygame.Surface, is_show_hitbox=True):
-        super().draw(screen, is_show_hitbox)
+    def draw(self, screen: pygame.Surface, zombie_killed, plants, is_show_hitbox=True):
+        super().draw(screen, zombie_killed, plants, is_show_hitbox)
         if time.time() - self.animation_time1 > 0.5:
             self.sprite.image = ConeZombie.image2
             self.animation_time1 = time.time()
@@ -93,8 +93,8 @@ class BucketZombie(Zombie):
         self.animation_time1 = time.time()
         self.animation_time2 = time.time() + 0.25
 
-    def draw(self, screen: pygame.Surface, is_show_hitbox=True):
-        super().draw(screen, is_show_hitbox)
+    def draw(self, screen: pygame.Surface, zombie_killed, plants, is_show_hitbox=True):
+        super().draw(screen, zombie_killed, plants, is_show_hitbox)
         if time.time() - self.animation_time1 > 0.5:
             self.sprite.image = BucketZombie.image2
             self.animation_time1 = time.time()
