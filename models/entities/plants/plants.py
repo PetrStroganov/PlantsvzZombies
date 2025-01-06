@@ -17,8 +17,13 @@ class Plant:
         from pvz import busy_lawns
         if self.health > 0:
             self._.draw(screen)
+            self.update_rect()
         else:
             busy_lawns.remove([self.line, self.column])
+
+    def update_rect(self):
+        if self.sprite:
+            self.sprite.rect = pygame.Rect(self.x, self.y, 80, 90)
 
 
 class SunFlower(Plant):
@@ -41,7 +46,8 @@ class SunFlower(Plant):
     def draw(self, screen: pygame.Surface, is_show_hitbox=True):
         super().draw(screen, is_show_hitbox)
         if is_show_hitbox:
-            pygame.draw.rect(screen, self.plant_color, self.plant_hitbox, width=1)
+            pygame.draw.rect(screen, self.plant_color, self.plant_hitbox,
+                             width=1)
         if time.time() - self.animation_time1 > 0.5:
             self.sprite.image = SunFlower.image2
             self.animation_time1 = time.time()

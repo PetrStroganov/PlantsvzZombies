@@ -1,16 +1,25 @@
+from models.entities.zombies.zombies import *
 from models.entities.plants.plants import *
 from models.interface.hud import HUD
 from models.interface.map import *
 from models.cursor import Cursor
 from models.map.other import *
+from methods import load_image
+import sys
 
-EXIT, MAIN_SCREEN = 0, 1
+EXIT, MAIN_SCREEN, GAME_OVER = 0, 1, 2
 busy_lawns = []
 suns = []
 plants = []
+zombies = []
+zombie_killed = 0
+zombie_delay = 10
+game_active = True
 
 
 def game(screen):
+    global busy_lawns, suns, plants, zombies, zombie_killed, zombie_delay, game_active
+
     plants_vs_zombies_map = Map()
     hud = HUD()
     field = Field()
@@ -28,8 +37,9 @@ def game(screen):
     drag_plant_image = None
     dragging = False
     drag_x, drag_y = -100, -100
+    zombie_spawn_time = time.time()
+    font = pygame.font.Font(None, 36)
     while running:
-        # Обрабатываем события
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return EXIT
@@ -107,6 +117,61 @@ def game(screen):
         cursor.draw(screen)
         if dragging and drag_plant_image is not None:
             screen.blit(drag_plant_image, (drag_x, drag_y))
+
+        if time.time() - zombie_spawn_time >= zombie_delay:
+            line = random.randint(1, 5)
+            x = 1000
+            y = 100 + (line-1) * 100
+            zombie_type = random.choice([BasicZombie, ConeZombie, BucketZombie])
+            zombies.append(zombie_type(line, x, y))
+            zombie_spawn_time = time.time()
+
+        for zombie in zombies:
+            zombie.draw(screen, is_show_hitbox=isShowHitbox)
+            zombie_killed, zombie_delay, game_active = zombie.update(plants, zombie_killed, zombie_delay, game_active)
+            if not game_active:
+              return GAME_OVER
+        zombies[:] = [zombie for zombie in zombies if zombie.health > 0]
+
         suns_text = font.render(str(suns_count), True, (0, 0, 0))
         screen.blit(suns_text, (45, 82))
         pygame.display.flip()
+
+def game_over(screen):
+    global busy_lawns, suns, plants, zombies, zombie_killed, zombie_delay, game_active
+    cursor = Cursor()
+    pygame.mouse.set_visible(False)
+    font = pygame.font.Font(None, 72)
+    text = font.render("Game Over", True, (255, 0, 0))
+    text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 50))
+
+    button_font = pygame.font.Font(None, 36)
+    button_text = button_font.render("Play Again", True, (255, 255, 255))
+    button_rect = button_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 50))
+    button_color = (100, 100, 100)
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return EXIT
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = event.pos
+                if button_rect.collidepoint(mouse_pos):
+                    busy_lawns = []
+                    suns = []
+                    plants = []
+                    zombies = []
+                    zombie_killed = 0
+                    zombie_delay = 10
+                    game_active = True
+                    return MAIN_SCREEN
+            if event.type == pygame.MOUSEMOTION:
+                cursor.move(*event.pos)
+        screen.fill((0, 0, 0))
+        screen.blit(text, text_rect)
+        pygame.draw.rect(screen, button_color, button_rect.inflate(20,10))
+        screen.blit(button_text, button_rect)
+        cursor.draw(screen)
+        pygame.display.flip()
+
