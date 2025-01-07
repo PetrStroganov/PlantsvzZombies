@@ -1,6 +1,6 @@
 import pygame
 import time
-from models.map.other import Sun
+from models.map.other import Sun, Pea
 from methods import load_image
 
 
@@ -17,19 +17,20 @@ class Plant:
         if self.health > 0:
             self._.draw(screen)
         else:
-            busy_lawns.remove([self.line, self.column])
+            if (self.column, self.line) in busy_lawns:
+                busy_lawns.remove((self.column, self.line))
             self.sprite.kill()
 
 
 class SunFlower(Plant):
-    image1 = pygame.transform.scale(load_image("images/sun1.png"), (90, 90))
-    image2 = pygame.transform.scale(load_image("images/sun2.png"), (90, 90))
+    image1 = pygame.transform.scale(load_image("images/sun1.png"), (80, 80))
+    image2 = pygame.transform.scale(load_image("images/sun2.png"), (80, 80))
 
     def __init__(self, x, y):
         super().__init__(health=75, cost=50, x=x, y=y)
         self.sprite = pygame.sprite.Sprite()
         self.sprite.image = SunFlower.image1
-        self.plant_hitbox = pygame.rect.Rect(self.x, self.y, 80, 90)
+        self.plant_hitbox = pygame.rect.Rect(self.x, self.y, 70, 80)
         self.plant_color = pygame.color.Color((100, 255, 0))
         self.sprite.rect = self.plant_hitbox
         self._ = pygame.sprite.GroupSingle()
@@ -56,8 +57,46 @@ class SunFlower(Plant):
             self.spawn_time = time.time()
 
 
-class PeeShooter(Plant):
-    pass
+class PeaShooter(Plant):
+    image1 = pygame.transform.scale(load_image("images/pea1.png"), (140, 90))
+    image2 = pygame.transform.scale(load_image("images/pea2.png"), (140, 90))
+    image3 = pygame.transform.scale(load_image("images/pea3.png"), (140, 90))
+
+    def __init__(self, x, y):
+        super().__init__(health=100, cost=100, x=x, y=y)
+        self.sprite = pygame.sprite.Sprite()
+        self.sprite.image = PeaShooter.image1
+        self.plant_hitbox = pygame.rect.Rect(self.x, self.y, 80, 90)
+        self.plant_color = pygame.color.Color((100, 255, 0))
+        self.sprite.rect = self.plant_hitbox.move(-20, 0)
+        self._ = pygame.sprite.GroupSingle()
+        self._.add(self.sprite)
+        self.shoot_time = time.time()
+        self.animation_time3 = time.time()
+        self.animation_time2 = time.time() + 0.25
+        self.animation_time1 = time.time() + 0.5
+
+    def draw(self, screen: pygame.Surface, busy_lawns, is_show_hitbox=True):
+        super().draw(screen, busy_lawns, is_show_hitbox)
+        if is_show_hitbox:
+            pygame.draw.rect(screen, self.plant_color, self.plant_hitbox, width=1)
+        if time.time() - self.animation_time1 > 0.75:
+            self.sprite.image = PeaShooter.image1
+            self.animation_time1 = time.time()
+        if time.time() - self.animation_time2 > 0.75:
+            self.sprite.image = PeaShooter.image3
+            self.animation_time2 = time.time()
+        if time.time() - self.animation_time3 > 0.75:
+            self.sprite.image = PeaShooter.image2
+            self.animation_time3 = time.time()
+
+    def shoot(self, peas, zombies):
+        for zombie in zombies:
+            if self.line == zombie.line and time.time() - self.shoot_time > 3:
+                generated_pea = Pea(self.x + 20, self.y + 10)
+                peas.append(generated_pea)
+                self.shoot_time = time.time()
+
 
 
 class Nut(Plant):

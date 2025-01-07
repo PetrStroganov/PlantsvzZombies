@@ -10,7 +10,7 @@ class Zombie(pygame.sprite.Sprite):
         self.line = line
         self.x = x
         self.y = y
-        self.change_x = 0.04
+        self.change_x = 0.025
         self.eating = False
         self.sprite = pygame.sprite.Sprite()
         self.sprite.image = BasicZombie.image1
@@ -85,7 +85,7 @@ class ConeZombie(Zombie):
 
 class BucketZombie(Zombie):
     image1 = pygame.transform.scale(load_image("images/buck1.png"), (80, 130))
-    image2 = pygame.transform.scale(load_image("images/buck2.png"), (80, 130))
+    image2 = pygame.transform.scale(load_image("images/buck2.png"), (90, 130))
 
     def __init__(self, line, x, y):
         super().__init__(health=25, line=line, x=x, y=y)

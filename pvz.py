@@ -14,8 +14,8 @@ def game(screen):
     suns = []
     plants = []
     zombies = []
+    peas = []
     zombie_killed = 0
-    game_active = True
     plants_vs_zombies_map = Map()
     hud = HUD()
     field = Field()
@@ -60,7 +60,7 @@ def game(screen):
                         plant_sound.play()
                     if 30 <= clicked_pos[0] <= 110 and 240 <= clicked_pos[1] <= 350:
                         dragging = True
-                        seed = "PeeShooter"
+                        seed = "PeaShooter"
                         drag_plant_image = pygame.transform.scale(load_image("images/pea1.png"), (170, 90))
                         drag_plant_image.set_alpha(128)
                         plant_sound.play()
@@ -83,11 +83,19 @@ def game(screen):
                         x_plant = lawn_x(drag_x + 40)[0]
                         y_plant = lawn_y(drag_y + 50)[0]
                         if seed == "SunFlower" and (
-                                lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 50:
+                        lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 50:
                             suns_count -= 50
                             busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
                             plant = SunFlower(x_plant, y_plant)
-                            plant.line = lawn_y(drag_y + 50)[1]
+                            plant.column, plant.line = lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]
+                            plants.append(plant)
+                            plant_sound.play()
+                        elif seed == "PeaShooter" and (
+                        lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 100:
+                            suns_count -= 100
+                            busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
+                            plant = PeaShooter(x_plant, y_plant)
+                            plant.column, plant.line = lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]
                             plants.append(plant)
                             plant_sound.play()
             if event.type == pygame.MOUSEMOTION:
@@ -109,8 +117,13 @@ def game(screen):
                 new_sun = plant.generate_sun(suns)
                 if new_sun:
                     suns.append(new_sun)
-        for sun in suns:
-            sun.draw(screen, is_show_hitbox=isShowHitbox)
+            if isinstance(plant, PeaShooter):
+                new_pea = plant.shoot(peas, zombies)
+                if new_pea:
+                    peas.append(new_pea)
+        for pea in peas:
+            pea.check_shoot(zombies)
+            pea.draw(screen, zombies, isShowHitbox)
         cursor.draw(screen)
         if dragging and drag_plant_image is not None:
             screen.blit(drag_plant_image, (drag_x, drag_y))
@@ -129,8 +142,10 @@ def game(screen):
             zombie.draw(screen, zombie_killed, plants, is_show_hitbox=isShowHitbox)
             if zombie.game_over():
                 return GAME_OVER
+        for sun in suns:
+            sun.draw(screen, is_show_hitbox=isShowHitbox)
         zombies[:] = [zombie for zombie in zombies if zombie.health > 0]
-        plants[:] = [plant for plant in plants if plant.health > 0]
+        # plants[:] = [plant for plant in plants if plant.health > 0]
         suns_text = font.render(str(suns_count), True, (0, 0, 0))
         screen.blit(suns_text, (45, 82))
         pygame.display.flip()
@@ -156,12 +171,6 @@ def game_over(screen):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
                 if button_rect.collidepoint(mouse_pos):
-                    busy_lawns = []
-                    suns = []
-                    plants = []
-                    zombies = []
-                    zombie_killed = 0
-                    game_active = True
                     return MAIN_SCREEN
             if event.type == pygame.MOUSEMOTION:
                 cursor.move(*event.pos)

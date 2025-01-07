@@ -50,4 +50,36 @@ class FallingSun(Sun):
 
 
 class Pea:
-    pass
+    image = pygame.transform.scale(load_image("images/bul.png"), (30, 30))
+
+    def __init__(self, x: int, y: int):
+        self.x = x
+        self.y = y
+        self.pea_hitbox = pygame.rect.Rect(self.x, self.y, 30, 30)
+        self.pea_color = pygame.color.Color((0, 0, 255))
+        self.sprite = pygame.sprite.Sprite()
+        self.sprite.image = Pea.image
+        self.sprite.rect = self.pea_hitbox
+        self._ = pygame.sprite.GroupSingle()
+        self._.add(self.sprite)
+        self.death_time = time.time()
+        self.collided = False
+        spawn_sound = pygame.mixer.Sound("models/sounds/peaspawn.mp3")
+        spawn_sound.play()
+
+    def draw(self, screen: pygame.Surface, zombies, is_show_hitbox=True):
+        if not self.collided:
+            if is_show_hitbox:
+                pygame.draw.rect(screen, self.pea_color, self.pea_hitbox, width=2)
+            self._.draw(screen)
+            self.x += 1 / 1.5
+            self.sprite.rect.x = self.x
+            if self.y >= 900:
+                self.sprite.kill()
+
+    def check_shoot(self, zombies):
+        for zombie in zombies:
+            if pygame.sprite.spritecollide(self.sprite, zombie._, False) and not self.collided:
+                zombie.health -= 1
+                self.collided = True
+                break
