@@ -87,17 +87,22 @@ def game(screen):
                             suns_count -= 50
                             busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
                             plant = SunFlower(x_plant, y_plant)
-                            plant.column, plant.line = lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]
-                            plants.append(plant)
-                            plant_sound.play()
+
                         elif seed == "PeaShooter" and (
                         lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 100:
                             suns_count -= 100
                             busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
                             plant = PeaShooter(x_plant, y_plant)
-                            plant.column, plant.line = lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]
-                            plants.append(plant)
-                            plant_sound.play()
+
+                        elif seed == "Nut" and (
+                        lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 50:
+                            suns_count -= 50
+                            busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
+                            plant = Nut(x_plant, y_plant)
+
+                        plant.column, plant.line = lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]
+                        plants.append(plant)
+                        plant_sound.play()
             if event.type == pygame.MOUSEMOTION:
                 cursor.move(*event.pos)
                 if dragging:

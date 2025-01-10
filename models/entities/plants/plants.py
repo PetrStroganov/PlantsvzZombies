@@ -30,7 +30,7 @@ class SunFlower(Plant):
         super().__init__(health=75, cost=50, x=x, y=y)
         self.sprite = pygame.sprite.Sprite()
         self.sprite.image = SunFlower.image1
-        self.plant_hitbox = pygame.rect.Rect(self.x, self.y, 70, 80)
+        self.plant_hitbox = pygame.rect.Rect(self.x, self.y + 10, 70, 80)
         self.plant_color = pygame.color.Color((100, 255, 0))
         self.sprite.rect = self.plant_hitbox
         self._ = pygame.sprite.GroupSingle()
@@ -98,9 +98,38 @@ class PeaShooter(Plant):
                 self.shoot_time = time.time()
 
 
-
 class Nut(Plant):
-    pass
+    image1 = pygame.transform.scale(load_image("images/nut1.png"), (70, 80))
+    image2 = pygame.transform.scale(load_image("images/nut2.png"), (70, 80))
+    image3 = pygame.transform.scale(load_image("images/nut3.png"), (70, 80))
+
+    def __init__(self, x, y):
+        super().__init__(health=300, cost=50, x=x, y=y)
+        self.sprite = pygame.sprite.Sprite()
+        self.sprite.image = Nut.image1
+        self.plant_hitbox = pygame.rect.Rect(self.x, self.y + 10, 70, 80)
+        self.plant_color = pygame.color.Color((100, 255, 0))
+        self.sprite.rect = self.plant_hitbox
+        self._ = pygame.sprite.GroupSingle()
+        self._.add(self.sprite)
+        self.shoot_time = time.time()
+        self.animation_time3 = time.time()
+        self.animation_time2 = time.time() + 0.25
+        self.animation_time1 = time.time() + 0.5
+
+    def draw(self, screen: pygame.Surface, busy_lawns, is_show_hitbox=True):
+        super().draw(screen, busy_lawns, is_show_hitbox)
+        if is_show_hitbox:
+            pygame.draw.rect(screen, self.plant_color, self.plant_hitbox, width=1)
+        if time.time() - self.animation_time1 > 0.75:
+            self.sprite.image = Nut.image1
+            self.animation_time1 = time.time()
+        if time.time() - self.animation_time2 > 0.75:
+            self.sprite.image = Nut.image3
+            self.animation_time2 = time.time()
+        if time.time() - self.animation_time3 > 0.75:
+            self.sprite.image = Nut.image2
+            self.animation_time3 = time.time()
 
 
 class TorchWood(Plant):
