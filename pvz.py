@@ -87,22 +87,33 @@ def game(screen):
                             suns_count -= 50
                             busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
                             plant = SunFlower(x_plant, y_plant)
-
+                            plant.column, plant.line = lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]
+                            plants.append(plant)
+                            plant_sound.play()
                         elif seed == "PeaShooter" and (
                         lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 100:
                             suns_count -= 100
                             busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
                             plant = PeaShooter(x_plant, y_plant)
-
+                            plant.column, plant.line = lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]
+                            plants.append(plant)
+                            plant_sound.play()
                         elif seed == "Nut" and (
                         lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 50:
                             suns_count -= 50
                             busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
                             plant = Nut(x_plant, y_plant)
-
-                        plant.column, plant.line = lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]
-                        plants.append(plant)
-                        plant_sound.play()
+                            plant.column, plant.line = lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]
+                            plants.append(plant)
+                            plant_sound.play()
+                        elif seed == "TorchWood" and (
+                        lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 175:
+                            suns_count -= 175
+                            busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
+                            plant = TorchWood(x_plant, y_plant)
+                            plant.column, plant.line = lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]
+                            plants.append(plant)
+                            plant_sound.play()
             if event.type == pygame.MOUSEMOTION:
                 cursor.move(*event.pos)
                 if dragging:
@@ -128,8 +139,7 @@ def game(screen):
                     peas.append(new_pea)
         for pea in peas:
             pea.check_shoot(zombies)
-            pea.draw(screen, zombies, isShowHitbox)
-        cursor.draw(screen)
+            pea.draw(screen, plants, isShowHitbox)
         if dragging and drag_plant_image is not None:
             screen.blit(drag_plant_image, (drag_x, drag_y))
         if time.time() - zombie_spawn_time >= 10:
@@ -153,6 +163,7 @@ def game(screen):
         # plants[:] = [plant for plant in plants if plant.health > 0]
         suns_text = font.render(str(suns_count), True, (0, 0, 0))
         screen.blit(suns_text, (45, 82))
+        cursor.draw(screen)
         pygame.display.flip()
 
 

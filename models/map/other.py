@@ -1,6 +1,9 @@
 import pygame
 import time
 import random
+
+from pygame.mixer_music import get_volume
+
 from methods import load_image, lawn_y, lawn_x
 
 
@@ -51,6 +54,7 @@ class FallingSun(Sun):
 
 class Pea:
     image = pygame.transform.scale(load_image("images/bul.png"), (30, 30))
+    fire_image = pygame.transform.scale(load_image("images/firebul.png"), (30, 30))
 
     def __init__(self, x: int, y: int):
         self.x = x
@@ -64,10 +68,11 @@ class Pea:
         self._.add(self.sprite)
         self.death_time = time.time()
         self.collided = False
+        self.damage = 1
         spawn_sound = pygame.mixer.Sound("models/sounds/peaspawn.mp3")
         spawn_sound.play()
 
-    def draw(self, screen: pygame.Surface, zombies, is_show_hitbox=True):
+    def draw(self, screen: pygame.Surface, plants, is_show_hitbox=True):
         if not self.collided:
             if is_show_hitbox:
                 pygame.draw.rect(screen, self.pea_color, self.pea_hitbox, width=2)
@@ -76,10 +81,18 @@ class Pea:
             self.sprite.rect.x = self.x
             if self.y >= 900:
                 self.sprite.kill()
+            #     Проверка на столкновение с древофакелом
+            for plant in plants:
+                if plant.fire and pygame.sprite.spritecollide(self.sprite, plant._, False):
+                    self.sprite.image = Pea.fire_image
+                    self.damage = 3
+
 
     def check_shoot(self, zombies):
         for zombie in zombies:
             if pygame.sprite.spritecollide(self.sprite, zombie._, False) and not self.collided:
-                zombie.health -= 1
+                zombie.health -= self.damage
+                hit_sound = pygame.mixer.Sound("models/sounds/hit.mp3")
+                hit_sound.play()
                 self.collided = True
                 break
