@@ -25,6 +25,7 @@ def game(screen):
     running = True
     suns_count = 250
     font = pygame.font.SysFont(None, 40)
+    font1 = pygame.font.SysFont(None, 30)
     falling_time = time.time()
     zombie_spawn_time = time.time()
     pygame.mixer.music.load("models/sounds/grasswalk.mp3")
@@ -159,10 +160,14 @@ def game(screen):
                 return GAME_OVER
         for sun in suns:
             sun.draw(screen, is_show_hitbox=isShowHitbox)
-        zombies[:] = [zombie for zombie in zombies if zombie.health > 0]
+        # zombies[:] = [zombie for zombie in zombies if zombie.health > 0]
         # plants[:] = [plant for plant in plants if plant.health > 0]
         suns_text = font.render(str(suns_count), True, (0, 0, 0))
         screen.blit(suns_text, (45, 82))
+        zombies_killed_text1 = font1.render(str(zombie_killed), True, (0, 0, 0))
+        screen.blit(zombies_killed_text1, (900, 50))
+        zombies_killed_text2 = font1.render("убито зомбе", True, (0, 0, 0))
+        screen.blit(zombies_killed_text2, (850, 20))
         cursor.draw(screen)
         pygame.display.flip()
 

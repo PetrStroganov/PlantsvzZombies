@@ -17,27 +17,29 @@ class Zombie(pygame.sprite.Sprite):
         self.zombie_hitbox = pygame.Rect(self.x, self.y, 80, 130)
         self.zombie_color = pygame.color.Color((255, 0, 0))
         self.sprite.rect = self.zombie_hitbox
+        self.alive = True
         self._ = pygame.sprite.GroupSingle()
         self._.add(self.sprite)
 
     def draw(self, screen: pygame.Surface, zombie_killed, plants, is_show_hitbox=True):
-        if not self.eating:
-            self.x -= self.change_x
-            self.sprite.rect.x = self.x
-        if is_show_hitbox:
-            pygame.draw.rect(screen, self.zombie_color, self.zombie_hitbox, width=1)
-        if self.health > 0:
+        if self.alive:
             self._.draw(screen)
-        else:
-            zombie_killed += 1
-            self.sprite.kill()
-        for plant in plants:
-            if self.line == plant.line and pygame.sprite.spritecollide(self.sprite, plant._, False):
-                plant.health -= 0.02
-                self.eating = True
-                if plant.health <= 0:
-                    self.eating = False
-                break
+            if not self.eating:
+                self.x -= self.change_x
+                self.sprite.rect.x = self.x
+            if is_show_hitbox:
+                pygame.draw.rect(screen, self.zombie_color, self.zombie_hitbox, width=1)
+            if self.health <= 0:
+                zombie_killed += 1
+                self.alive = False
+                self.sprite.kill()
+            for plant in plants:
+                if self.line == plant.line and pygame.sprite.spritecollide(self.sprite, plant._, False):
+                    plant.health -= 0.02
+                    self.eating = True
+                    if plant.health <= 0:
+                        self.eating = False
+                    break
 
     def game_over(self):
         if self.x <= 200:
