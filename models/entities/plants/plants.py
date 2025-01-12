@@ -42,7 +42,7 @@ class SunFlower(Plant):
 
     def draw(self, screen: pygame.Surface, busy_lawns, is_show_hitbox=True):
         super().draw(screen, busy_lawns, is_show_hitbox)
-        if is_show_hitbox:
+        if is_show_hitbox and self.health > 0:
             pygame.draw.rect(screen, self.plant_color, self.plant_hitbox, width=1)
         if time.time() - self.animation_time1 > 0.5:
             self.sprite.image = SunFlower.image2
@@ -79,7 +79,7 @@ class PeaShooter(Plant):
 
     def draw(self, screen: pygame.Surface, busy_lawns, is_show_hitbox=True):
         super().draw(screen, busy_lawns, is_show_hitbox)
-        if is_show_hitbox:
+        if is_show_hitbox and self.health > 0:
             pygame.draw.rect(screen, self.plant_color, self.plant_hitbox, width=1)
         if time.time() - self.animation_time1 > 0.75:
             self.sprite.image = PeaShooter.image1
@@ -120,7 +120,7 @@ class Nut(Plant):
 
     def draw(self, screen: pygame.Surface, busy_lawns, is_show_hitbox=True):
         super().draw(screen, busy_lawns, is_show_hitbox)
-        if is_show_hitbox:
+        if is_show_hitbox and self.health > 0:
             pygame.draw.rect(screen, self.plant_color, self.plant_hitbox, width=1)
         if time.time() - self.animation_time1 > 1.2:
             self.sprite.image = Nut.image1
@@ -155,7 +155,7 @@ class TorchWood(Plant):
 
     def draw(self, screen: pygame.Surface, busy_lawns, is_show_hitbox=True):
         super().draw(screen, busy_lawns, is_show_hitbox)
-        if is_show_hitbox:
+        if is_show_hitbox and self.health > 0:
             pygame.draw.rect(screen, self.plant_color, self.plant_hitbox, width=1)
         if time.time() - self.animation_time1 > 0.6:
             self.sprite.image = TorchWood.image1
