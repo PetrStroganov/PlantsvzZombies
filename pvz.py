@@ -15,7 +15,7 @@ def game(screen):
     plants = []
     zombies = []
     peas = []
-    zombie_killed = 0
+    zombie_killed = int(0)
     plants_vs_zombies_map = Map()
     hud = HUD()
     field = Field()
@@ -155,7 +155,8 @@ def game(screen):
             zombies.append(zombie)
             zombie_spawn_time = time.time()
         for zombie in zombies:
-            zombie.draw(screen, zombie_killed, plants, is_show_hitbox=isShowHitbox)
+            zombie.draw(screen, plants, is_show_hitbox=isShowHitbox)
+            zombie_killed = zombie.zombies_killed(zombie_killed)
             if zombie.game_over():
                 return GAME_OVER
         for sun in suns:

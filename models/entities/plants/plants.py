@@ -72,7 +72,7 @@ class PeaShooter(Plant):
         self.sprite.rect = self.plant_hitbox.move(-20, 0)
         self._ = pygame.sprite.GroupSingle()
         self._.add(self.sprite)
-        self.shoot_time = time.time() + 4
+        self.shoot_time = time.time() - 4
         self.animation_time3 = time.time()
         self.animation_time2 = time.time() + 0.25
         self.animation_time1 = time.time() + 0.5
