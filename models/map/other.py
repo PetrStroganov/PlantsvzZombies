@@ -85,7 +85,7 @@ class Pea:
             for plant in plants:
                 if plant.fire and pygame.sprite.spritecollide(self.sprite, plant._, False):
                     self.sprite.image = Pea.fire_image
-                    self.damage = 3
+                    self.damage = 1.5
 
 
     def check_shoot(self, zombies):

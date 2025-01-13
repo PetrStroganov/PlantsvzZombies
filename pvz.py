@@ -161,8 +161,6 @@ def game(screen):
                 return GAME_OVER
         for sun in suns:
             sun.draw(screen, is_show_hitbox=isShowHitbox)
-        # zombies[:] = [zombie for zombie in zombies if zombie.health > 0]
-        # plants[:] = [plant for plant in plants if plant.health > 0]
         suns_text = font.render(str(suns_count), True, (0, 0, 0))
         screen.blit(suns_text, (45, 82))
         zombies_killed_text1 = font1.render(str(zombie_killed), True, (0, 0, 0))
