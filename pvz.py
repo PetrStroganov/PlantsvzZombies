@@ -6,7 +6,7 @@ from models.cursor import Cursor
 from models.map.other import *
 from methods import load_image
 
-EXIT, MAIN_SCREEN, GAME_OVER = 0, 1, 2
+EXIT, MAIN_SCREEN, GAME_OVER, GAME_WIN = 0, 1, 2, 3
 
 
 def game(screen):
@@ -171,7 +171,39 @@ def game(screen):
         screen.blit(zombies_killed_text2, (850, 20))
         cursor.draw(screen)
         pygame.display.flip()
+        if zombie_killed >= 15:
+            return GAME_WIN
 
+def game_win(screen):
+    cursor = Cursor()
+    pygame.mouse.set_visible(False)
+    font = pygame.font.Font(None, 72)
+    text = font.render("You Win!", True, (0, 255, 0))
+    text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 50))
+
+    button_font = pygame.font.Font(None, 36)
+    button_text = button_font.render("Play Again", True, (255, 255, 255))
+    button_rect = button_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 50))
+    button_color = (100, 100, 100)
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return EXIT
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = event.pos
+                if button_rect.collidepoint(mouse_pos):
+                    return MAIN_SCREEN
+            if event.type == pygame.MOUSEMOTION:
+                cursor.move(*event.pos)
+
+        screen.fill((0, 0, 0))
+        screen.blit(text, text_rect)
+        pygame.draw.rect(screen, button_color, button_rect.inflate(20, 10))
+        screen.blit(button_text, button_rect)
+        cursor.draw(screen)
+        pygame.display.flip()
 
 def game_over(screen):
     cursor = Cursor()

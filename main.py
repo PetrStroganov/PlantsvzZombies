@@ -1,7 +1,6 @@
 import pygame
-from pvz import game, game_over
+from pvz import game, game_over, game_win
 
-screen_dict = {1: game}
 
 if __name__ == '__main__':
     pygame.init()
@@ -10,7 +9,8 @@ if __name__ == '__main__':
     screen_id = 1
     screen_dict = {
         1: game,
-        2: game_over
+        2: game_over,
+        3: game_win
     }
     while screen_id:
         screen_id = screen_dict[screen_id](screen)
