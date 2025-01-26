@@ -1,9 +1,6 @@
 import pygame
 import time
 import random
-
-from pygame.mixer_music import get_volume
-
 from methods import load_image, lawn_y, lawn_x
 
 
@@ -86,7 +83,6 @@ class Pea:
                 if plant.fire and pygame.sprite.spritecollide(self.sprite, plant._, False):
                     self.sprite.image = Pea.fire_image
                     self.damage = 1.5
-
 
     def check_shoot(self, zombies):
         for zombie in zombies:

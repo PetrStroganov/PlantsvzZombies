@@ -164,4 +164,3 @@ class TorchWood(Plant):
         if time.time() - self.animation_time3 > 0.6:
             self.sprite.image = TorchWood.image2
             self.animation_time3 = time.time()
-

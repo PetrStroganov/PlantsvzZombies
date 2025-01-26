@@ -2,7 +2,7 @@ from models.entities.zombies.zombies import *
 from models.entities.plants.plants import *
 from models.interface.hud import HUD
 from models.interface.map import *
-from models.cursor import Cursor
+from cursor import Cursor
 from models.map.other import *
 from methods import load_image
 
@@ -84,7 +84,7 @@ def game(screen):
                         x_plant = lawn_x(drag_x + 40)[0]
                         y_plant = lawn_y(drag_y + 50)[0]
                         if seed == "SunFlower" and (
-                        lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 50:
+                                lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 50:
                             suns_count -= 50
                             busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
                             plant = SunFlower(x_plant, y_plant)
@@ -92,7 +92,7 @@ def game(screen):
                             plants.append(plant)
                             plant_sound.play()
                         elif seed == "PeaShooter" and (
-                        lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 100:
+                                lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 100:
                             suns_count -= 100
                             busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
                             plant = PeaShooter(x_plant, y_plant)
@@ -100,7 +100,7 @@ def game(screen):
                             plants.append(plant)
                             plant_sound.play()
                         elif seed == "Nut" and (
-                        lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 50:
+                                lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 50:
                             suns_count -= 50
                             busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
                             plant = Nut(x_plant, y_plant)
@@ -108,7 +108,7 @@ def game(screen):
                             plants.append(plant)
                             plant_sound.play()
                         elif seed == "TorchWood" and (
-                        lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 175:
+                                lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 175:
                             suns_count -= 175
                             busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
                             plant = TorchWood(x_plant, y_plant)
@@ -172,6 +172,7 @@ def game(screen):
         if zombie_killed >= 15:
             return GAME_WIN
 
+
 def game_win(screen):
     cursor = Cursor()
     pygame.mouse.set_visible(False)
@@ -202,6 +203,7 @@ def game_win(screen):
         screen.blit(button_text, button_rect)
         cursor.draw(screen)
         pygame.display.flip()
+
 
 def game_over(screen):
     cursor = Cursor()

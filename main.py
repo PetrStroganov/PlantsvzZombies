@@ -1,7 +1,6 @@
 import pygame
 from pvz import game, game_over, game_win
 
-
 if __name__ == '__main__':
     pygame.init()
     size = w, h = 1000, 600

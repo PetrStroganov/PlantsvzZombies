@@ -3,8 +3,6 @@ from methods import load_image
 
 
 class Cursor:
-    # Изображение 50х650
-
     def __init__(self):
         self.sprite = pygame.sprite.Sprite()
         self.sprite.image = load_image("images/crosshair.png")
