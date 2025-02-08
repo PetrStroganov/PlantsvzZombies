@@ -72,7 +72,7 @@ class PeaShooter(Plant):
         self.sprite.rect = self.plant_hitbox.move(-20, 0)
         self._ = pygame.sprite.GroupSingle()
         self._.add(self.sprite)
-        self.shoot_time = time.time() - 4
+        self.shoot_time = time.time() - 2
         self.animation_time3 = time.time()
         self.animation_time2 = time.time() + 0.25
         self.animation_time1 = time.time() + 0.5
@@ -113,7 +113,6 @@ class Nut(Plant):
         self.sprite.rect = self.plant_hitbox
         self._ = pygame.sprite.GroupSingle()
         self._.add(self.sprite)
-        self.shoot_time = time.time()
         self.animation_time3 = time.time()
         self.animation_time2 = time.time() + 0.4
         self.animation_time1 = time.time() + 0.8
@@ -148,7 +147,6 @@ class TorchWood(Plant):
         self._ = pygame.sprite.GroupSingle()
         self._.add(self.sprite)
         self.fire = True
-        self.shoot_time = time.time()
         self.animation_time3 = time.time()
         self.animation_time2 = time.time() + 0.2
         self.animation_time1 = time.time() + 0.4
@@ -166,4 +164,3 @@ class TorchWood(Plant):
         if time.time() - self.animation_time3 > 0.6:
             self.sprite.image = TorchWood.image2
             self.animation_time3 = time.time()
-
