@@ -1,12 +1,12 @@
-from methods import load_image
-from models.cursor import Cursor
-from models.entities.plants.plants import *
 from models.entities.zombies.zombies import *
+from models.entities.plants.plants import *
 from models.interface.hud import HUD
 from models.interface.map import *
+from cursor import Cursor
 from models.map.other import *
+from methods import load_image
 
-EXIT, MAIN_SCREEN, GAME_OVER, GAME_WIN, MENU = 0, 1, 2, 3, 4
+EXIT, MAIN_SCREEN, GAME_OVER, GAME_WIN = 0, 1, 2, 3
 
 
 def game(screen):
@@ -53,36 +53,28 @@ def game(screen):
                             suns.remove(sun)
                             break
                 if not dragging:
-                    if 30 <= clicked_pos[0] <= 110 and 120 <= clicked_pos[
-                        1] <= 230:
+                    if 30 <= clicked_pos[0] <= 110 and 120 <= clicked_pos[1] <= 230:
                         dragging = True
                         seed = "SunFlower"
-                        drag_plant_image = pygame.transform.scale(
-                            load_image("images/sun2.png"), (90, 90))
+                        drag_plant_image = pygame.transform.scale(load_image("images/sun2.png"), (90, 90))
                         drag_plant_image.set_alpha(128)
                         plant_sound.play()
-                    if 30 <= clicked_pos[0] <= 110 and 240 <= clicked_pos[
-                        1] <= 350:
+                    if 30 <= clicked_pos[0] <= 110 and 240 <= clicked_pos[1] <= 350:
                         dragging = True
                         seed = "PeaShooter"
-                        drag_plant_image = pygame.transform.scale(
-                            load_image("images/pea1.png"), (170, 90))
+                        drag_plant_image = pygame.transform.scale(load_image("images/pea1.png"), (170, 90))
                         drag_plant_image.set_alpha(128)
                         plant_sound.play()
-                    if 30 <= clicked_pos[0] <= 110 and 360 <= clicked_pos[
-                        1] <= 470:
+                    if 30 <= clicked_pos[0] <= 110 and 360 <= clicked_pos[1] <= 470:
                         dragging = True
                         seed = "Nut"
-                        drag_plant_image = pygame.transform.scale(
-                            load_image("images/nut1.png"), (70, 80))
+                        drag_plant_image = pygame.transform.scale(load_image("images/nut1.png"), (70, 80))
                         drag_plant_image.set_alpha(128)
                         plant_sound.play()
-                    if 30 <= clicked_pos[0] <= 110 and 480 <= clicked_pos[
-                        1] <= 590:
+                    if 30 <= clicked_pos[0] <= 110 and 480 <= clicked_pos[1] <= 590:
                         dragging = True
                         seed = "TorchWood"
-                        drag_plant_image = pygame.transform.scale(
-                            load_image("images/tree3.png"), (80, 90))
+                        drag_plant_image = pygame.transform.scale(load_image("images/tree3.png"), (80, 90))
                         drag_plant_image.set_alpha(128)
                         plant_sound.play()
             if event.type == pygame.MOUSEBUTTONUP:
@@ -92,47 +84,35 @@ def game(screen):
                         x_plant = lawn_x(drag_x + 40)[0]
                         y_plant = lawn_y(drag_y + 50)[0]
                         if seed == "SunFlower" and (
-                                lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[
-                                    1]) not in busy_lawns and suns_count >= 50:
+                        lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 50:
                             suns_count -= 50
-                            busy_lawns.append((lawn_x(drag_x + 40)[1],
-                                               lawn_y(drag_y + 50)[1]))
+                            busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
                             plant = SunFlower(x_plant, y_plant)
-                            plant.column, plant.line = lawn_x(drag_x + 40)[1], \
-                            lawn_y(drag_y + 50)[1]
+                            plant.column, plant.line = lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]
                             plants.append(plant)
                             plant_sound.play()
                         elif seed == "PeaShooter" and (
-                                lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[
-                                    1]) not in busy_lawns and suns_count >= 100:
+                        lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 100:
                             suns_count -= 100
-                            busy_lawns.append((lawn_x(drag_x + 40)[1],
-                                               lawn_y(drag_y + 50)[1]))
+                            busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
                             plant = PeaShooter(x_plant, y_plant)
-                            plant.column, plant.line = lawn_x(drag_x + 40)[1], \
-                            lawn_y(drag_y + 50)[1]
+                            plant.column, plant.line = lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]
                             plants.append(plant)
                             plant_sound.play()
                         elif seed == "Nut" and (
-                                lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[
-                                    1]) not in busy_lawns and suns_count >= 50:
+                        lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 50:
                             suns_count -= 50
-                            busy_lawns.append((lawn_x(drag_x + 40)[1],
-                                               lawn_y(drag_y + 50)[1]))
+                            busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
                             plant = Nut(x_plant, y_plant)
-                            plant.column, plant.line = lawn_x(drag_x + 40)[1], \
-                            lawn_y(drag_y + 50)[1]
+                            plant.column, plant.line = lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]
                             plants.append(plant)
                             plant_sound.play()
                         elif seed == "TorchWood" and (
-                                lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[
-                                    1]) not in busy_lawns and suns_count >= 175:
+                        lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]) not in busy_lawns and suns_count >= 175:
                             suns_count -= 175
-                            busy_lawns.append((lawn_x(drag_x + 40)[1],
-                                               lawn_y(drag_y + 50)[1]))
+                            busy_lawns.append((lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]))
                             plant = TorchWood(x_plant, y_plant)
-                            plant.column, plant.line = lawn_x(drag_x + 40)[1], \
-                            lawn_y(drag_y + 50)[1]
+                            plant.column, plant.line = lawn_x(drag_x + 40)[1], lawn_y(drag_y + 50)[1]
                             plants.append(plant)
                             plant_sound.play()
             if event.type == pygame.MOUSEMOTION:
@@ -185,8 +165,7 @@ def game(screen):
         # plants[:] = [plant for plant in plants if plant.health > 0]
         suns_text = font.render(str(suns_count), True, (0, 0, 0))
         screen.blit(suns_text, (45, 82))
-        zombies_killed_text1 = font1.render(str(zombie_killed), True,
-                                            (0, 0, 0))
+        zombies_killed_text1 = font1.render(str(zombie_killed), True, (0, 0, 0))
         screen.blit(zombies_killed_text1, (900, 50))
         zombies_killed_text2 = font1.render("убито зомбе", True, (0, 0, 0))
         screen.blit(zombies_killed_text2, (850, 20))
@@ -195,19 +174,16 @@ def game(screen):
         if zombie_killed >= 15:
             return GAME_WIN
 
-
 def game_win(screen):
     cursor = Cursor()
     pygame.mouse.set_visible(False)
     font = pygame.font.Font(None, 72)
     text = font.render("You Win!", True, (0, 255, 0))
-    text_rect = text.get_rect(
-        center=(screen.get_width() // 2, screen.get_height() // 2 - 50))
+    text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 50))
 
     button_font = pygame.font.Font(None, 36)
     button_text = button_font.render("Play Again", True, (255, 255, 255))
-    button_rect = button_text.get_rect(
-        center=(screen.get_width() // 2, screen.get_height() // 2 + 50))
+    button_rect = button_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 50))
     button_color = (100, 100, 100)
 
     running = True
@@ -229,19 +205,16 @@ def game_win(screen):
         cursor.draw(screen)
         pygame.display.flip()
 
-
 def game_over(screen):
     cursor = Cursor()
     pygame.mouse.set_visible(False)
     font = pygame.font.Font(None, 72)
     text = font.render("Game Over", True, (255, 0, 0))
-    text_rect = text.get_rect(
-        center=(screen.get_width() // 2, screen.get_height() // 2 - 50))
+    text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 50))
 
     button_font = pygame.font.Font(None, 36)
     button_text = button_font.render("Play Again", True, (255, 255, 255))
-    button_rect = button_text.get_rect(
-        center=(screen.get_width() // 2, screen.get_height() // 2 + 50))
+    button_rect = button_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 50))
     button_color = (100, 100, 100)
 
     running = True
