@@ -10,7 +10,7 @@ class Zombie(pygame.sprite.Sprite):
         self.line = line
         self.x = x
         self.y = y
-        self.change_x = 0.035
+        self.change_x = 0.04
         self.eating = False
         self.sprite = pygame.sprite.Sprite()
         self.sprite.image = BasicZombie.image1

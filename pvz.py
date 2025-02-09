@@ -28,6 +28,7 @@ def game(screen):
     font1 = pygame.font.SysFont(None, 30)
     falling_time = time.time()
     zombie_spawn_time = time.time()
+    game_start = time.time()
     pygame.mixer.music.load("models/sounds/grasswalk.mp3")
     plant_sound = pygame.mixer.Sound("models/sounds/seed.mp3")
     pygame.mixer.music.play(-1)
@@ -169,6 +170,11 @@ def game(screen):
         screen.blit(zombies_killed_text1, (900, 50))
         zombies_killed_text2 = font1.render("убито зомбе", True, (0, 0, 0))
         screen.blit(zombies_killed_text2, (850, 20))
+        if time.time() - game_start >= 20:
+            speed_text = font.render("зомби ускорились", True, (220, 20, 60), (0, 0, 0))
+            screen.blit(speed_text, (400, 30))
+            for zombie in zombies:
+                zombie.change_x = 0.075
         cursor.draw(screen)
         pygame.display.flip()
         if zombie_killed >= 15:
